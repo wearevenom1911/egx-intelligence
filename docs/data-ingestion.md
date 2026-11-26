@@ -43,3 +43,20 @@ No provider is currently wired to production. Do not publish imported data unles
 6. Add technical indicators only after the underlying bars pass quality checks.
 
 GitHub Pages is static hosting; it cannot run a persistent Python API or database.
+
+
+## DataCedar adapter (historical data)
+
+The repository now includes `egx_intelligence.data_cedar.DataCedarClient` and the `fetch-datacedar` CLI mode. The adapter uses the documented v3 REST endpoint, reads the API key from `DATACEDAR_API_KEY`, preserves provider attribution/currency/timestamps, validates OHLCV, and respects the Explorer plan's one-request-per-second admission.
+
+Create a free key at https://datacedar.com, then store it locally in `.env` (never commit it) or as a GitHub Actions repository secret named `DATACEDAR_API_KEY`. Never place the key in frontend code, HTML, logs, or chat.
+
+Example local request:
+
+```bash
+python -m egx_intelligence.cli --mode fetch-datacedar --symbols egx:COMI,egx:HRHO --timeframe 1d --from-date 2025-11-26 --output data/processed/egx-daily.json
+```
+
+The free Explorer plan is documented as one year of daily history, seven days of minute history, three symbols per request, and one request per second. The current single-symbol adapter issues one request per symbol, sequentially. DataCedar describes its product as historical OHLCV, not real-time quotes or a consolidated exchange feed. Coverage on a symbol page does not guarantee that every requested interval contains bars; an empty result is treated as no data, not as a zero price.
+
+The API adapter has been implemented and CI tests cover response normalization and error handling. A live authenticated provider call is **not yet executed** because no API key has been configured. No live prices have been inserted into the dashboard.
