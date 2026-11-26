@@ -7,10 +7,10 @@ import json
 from datetime import datetime, timezone
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="EGX Intelligence research runner")
     parser.add_argument("--mode", choices=["daily"], default="daily")
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     result = {
         "mode": args.mode,
         "status": "NO_TRADE",
