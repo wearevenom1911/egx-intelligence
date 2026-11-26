@@ -65,7 +65,7 @@ def main(argv: list[str] | None = None) -> int:
     print(json.dumps({
         "mode": args.mode,
         "status": "NO_TRADE",
-        "reason": "No verified daily research pipeline is not configured yet.",
+        "reason": "Daily research pipeline is not configured with a verified market-data source yet.",
         "generated_at": datetime.now(timezone.utc).isoformat(),
     }, indent=2))
     return 0
