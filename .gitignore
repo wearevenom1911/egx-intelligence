@@ -14,3 +14,6 @@ telegram_session*
 data/raw/
 data/private/
 .DS_Store
+
+# Local normalized market-data outputs; do not commit provider data without checking redistribution rights
+data/processed/
