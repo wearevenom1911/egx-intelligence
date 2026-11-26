@@ -1,0 +1,38 @@
+name: Daily Research
+
+on:
+  workflow_dispatch:
+  schedule:
+    # GitHub Actions schedules use UTC and may be delayed.
+    # 06:00 UTC is 08:00 Cairo during Egypt's UTC+2 period.
+    - cron: "0 6 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: daily-research
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate scaffold
+        run: python -c "import pandas, numpy, pydantic, requests; print('Research environment ready')"
+
+      # Telegram collection and market analysis will be enabled only after
+      # secure credentials and a verified, permitted market-data source exist.
