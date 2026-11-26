@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Personal market research and risk-management platform for EGX and selected US equities"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = ["requests>=2.32,<3.0"]
 
 [project.optional-dependencies]
 market = ["pandas>=2.2", "numpy>=1.26", "yfinance>=0.2"]
