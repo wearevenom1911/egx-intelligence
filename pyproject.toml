@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "egx-intelligence"
+version = "0.1.0"
+description = "Personal market research and risk-management platform for EGX and selected US equities"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+market = ["pandas>=2.2", "numpy>=1.26", "yfinance>=0.2"]
+telegram = ["telethon>=1.36"]
+api = ["fastapi>=0.115", "uvicorn[standard]>=0.30", "pydantic-settings>=2.5"]
+dev = ["pytest>=8.3", "ruff>=0.6", "mypy>=1.11"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["egx_intelligence*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
