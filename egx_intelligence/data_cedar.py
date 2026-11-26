@@ -6,6 +6,7 @@ API keys are read only from the environment and must never reach the browser.
 from __future__ import annotations
 
 import os
+import time
 from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from typing import Any
@@ -28,6 +29,7 @@ class DataCedarClient:
         if not self.api_key:
             raise DataCedarError("DATACEDAR_API_KEY is not configured")
         self.session = session or requests.Session()
+        self._last_request_at = 0.0
 
     def fetch_bars(
         self,
@@ -61,6 +63,10 @@ class DataCedarClient:
         if timeframe == "1d":
             params["adjustment"] = adjustment
 
+        # Explorer/free plan admission is one request per second.
+        wait = 1.05 - (time.monotonic() - self._last_request_at)
+        if wait > 0:
+            time.sleep(wait)
         try:
             response = self.session.get(
                 f"{BASE_URL}/stocks/{sid}/bars",
@@ -71,6 +77,7 @@ class DataCedarClient:
                 },
                 timeout=(5, 30),
             )
+            self._last_request_at = time.monotonic()
         except requests.RequestException as exc:
             raise DataCedarError(f"DataCedar network error: {exc.__class__.__name__}") from None
 
