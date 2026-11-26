@@ -22,7 +22,7 @@ A personal market-research and risk-management dashboard for the Egyptian Exchan
 ## Architecture
 
 - Python research/collector jobs run through GitHub Actions initially.
-- Static dashboard will be hosted with GitHub Pages.
+- Static dashboard is hosted with GitHub Pages.
 - Persistent storage is not provided by GitHub Pages or ephemeral Actions runners; a durable database/storage provider will be evaluated before relying on long-term history.
 - Telegram access will use an authorized Telegram client session stored only as an encrypted GitHub Secret or other secure secret store. Never commit session files or API credentials.
 
@@ -35,17 +35,23 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-No production integrations are active yet. Configure credentials only after reviewing the security notes.
-
 ## Current status
 
-- [x] Public repository created and verified.
-- [x] Initial project scaffold.
-- [ ] Telegram connection and authorized channel read test.
-- [ ] EGX/US market-data provider selection and validation.
-- [ ] Research engine and risk controls.
-- [ ] Dashboard and Pages deployment.
-- [ ] Daily report workflow with verified data.
+- [x] Public repository and GitHub Pages deployment.
+- [x] Initial project scaffold and CI.
+- [x] Source-attributed OHLCV CSV ingestion with strict validation.
+- [ ] Select and authorize a licensed EGX data provider.
+- [ ] Connect a documented EGX/US market-data API.
+- [ ] Durable database and scheduled ingestion.
+- [ ] Research engine, risk controls and verified reports.
+- [ ] Dashboard API integration.
+- [ ] Telegram integration (authorized channels only).
+
+## Market data ingestion
+
+See [docs/data-ingestion.md](docs/data-ingestion.md) and the empty [CSV template](data/imports/template.csv).
+
+The importer validates source-attributed CSV exports; it does not fetch live quotes. No live market-data provider is configured yet.
 
 ## Important
 
